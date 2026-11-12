@@ -122,3 +122,7 @@ the models is an observation, not a measured rate.
   `llm_connector.py` is used only if the database is unreachable.
 - Gemini's free tier is rate-limited and has a daily cap; the scripts retry per-minute limits
   automatically and pause between questions. If the daily cap is hit, wait until it resets.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
