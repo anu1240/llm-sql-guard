@@ -1,0 +1,312 @@
+{
+ "1": {
+  "n": 1,
+  "question": "How many customers are there?",
+  "trap": false,
+  "sql": "SELECT COUNT(*) FROM customers;",
+  "verdict": "VALID",
+  "detail": "1 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "2": {
+  "n": 2,
+  "question": "List the names of all products in the Laptops category.",
+  "trap": false,
+  "sql": "SELECT p.product_name FROM products p JOIN categories c ON p.category_id = c.category_id WHERE c.category_name = 'Laptops';",
+  "verdict": "VALID",
+  "detail": "4 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "3": {
+  "n": 3,
+  "question": "How many customers does each city have? Show the city and the count.",
+  "trap": false,
+  "sql": "SELECT city, COUNT(*) AS customer_count FROM customers GROUP BY city;",
+  "verdict": "VALID",
+  "detail": "7 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "4": {
+  "n": 4,
+  "question": "What is the most expensive product? Show its name and price.",
+  "trap": false,
+  "sql": "SELECT product_name, price FROM products ORDER BY price DESC LIMIT 1;",
+  "verdict": "VALID",
+  "detail": "1 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "5": {
+  "n": 5,
+  "question": "How many orders have been cancelled?",
+  "trap": false,
+  "sql": "SELECT COUNT(*) FROM orders WHERE order_status = 'Cancelled';",
+  "verdict": "VALID",
+  "detail": "1 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "6": {
+  "n": 6,
+  "question": "How many orders are there in each order status? Show the status and the count.",
+  "trap": false,
+  "sql": "SELECT order_status, COUNT(*) AS order_count FROM orders GROUP BY order_status;",
+  "verdict": "VALID",
+  "detail": "4 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "7": {
+  "n": 7,
+  "question": "List the full name and city of every GOLD tier customer.",
+  "trap": false,
+  "sql": "SELECT full_name, city FROM customers WHERE customer_tier = 'GOLD';",
+  "verdict": "VALID",
+  "detail": "8 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "8": {
+  "n": 8,
+  "question": "Show each category name and the average price of its products.",
+  "trap": false,
+  "sql": "SELECT c.category_name, AVG(p.price) AS average_price FROM categories c JOIN products p ON c.category_id = p.category_id GROUP BY c.category_id, c.category_name;",
+  "verdict": "VALID",
+  "detail": "6 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "9": {
+  "n": 9,
+  "question": "What is the total revenue (quantity times unit price) from DELIVERED orders?",
+  "trap": false,
+  "sql": "SELECT SUM(order_items.quantity * order_items.unit_price) AS total_revenue\nFROM orders\nJOIN order_items ON orders.order_id = order_items.order_id\nWHERE orders.order_status = 'DELIVERED';",
+  "verdict": "VALID",
+  "detail": "1 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "10": {
+  "n": 10,
+  "question": "Show the total revenue (quantity times unit price) for each product category name.",
+  "trap": false,
+  "sql": "SELECT c.category_name, SUM(oi.quantity * oi.unit_price) AS total_revenue FROM categories c JOIN products p ON c.category_id = p.category_id JOIN order_items oi ON p.product_id = oi.product_id GROUP BY c.category_id, c.category_name;",
+  "verdict": "VALID",
+  "detail": "6 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "11": {
+  "n": 11,
+  "question": "Who are the top 5 customers by total amount spent (quantity times unit price, all orders)? Show full name and total spent.",
+  "trap": false,
+  "sql": "SELECT c.full_name, SUM(oi.quantity * oi.unit_price) AS total_spent\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id\nJOIN order_items oi ON o.order_id = oi.order_id\nGROUP BY c.customer_id, c.full_name\nORDER BY total_spent DESC\nLIMIT 5;",
+  "verdict": "VALID",
+  "detail": "5 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "12": {
+  "n": 12,
+  "question": "How many reviews has each product received? Show the product name and review count, including products with no reviews.",
+  "trap": false,
+  "sql": "SELECT p.product_name, COUNT(r.review_id) AS review_count FROM products p LEFT JOIN reviews r ON p.product_id = r.product_id GROUP BY p.product_id, p.product_name;",
+  "verdict": "VALID",
+  "detail": "24 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "13": {
+  "n": 13,
+  "question": "What is the average rating of each product that has at least one review? Show product name and average rating.",
+  "trap": false,
+  "sql": "SELECT p.product_name, AVG(r.rating) AS average_rating FROM products p JOIN reviews r ON p.product_id = r.product_id GROUP BY p.product_id, p.product_name;",
+  "verdict": "VALID",
+  "detail": "24 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "14": {
+  "n": 14,
+  "question": "Which customers have never placed an order? Show their full names.",
+  "trap": false,
+  "sql": "SELECT c.full_name FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_id IS NULL;",
+  "verdict": "VALID",
+  "detail": "4 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "15": {
+  "n": 15,
+  "question": "Which customers have placed more than 12 orders? Show full name and order count.",
+  "trap": false,
+  "sql": "SELECT c.full_name, COUNT(o.order_id) AS order_count\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.full_name\nHAVING COUNT(o.order_id) > 12;",
+  "verdict": "VALID",
+  "detail": "3 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "16": {
+  "n": 16,
+  "question": "For each customer tier, how many customers are there and how many orders have they placed in total?",
+  "trap": false,
+  "sql": "SELECT \n    c.customer_tier, \n    COUNT(DISTINCT c.customer_id) AS total_customers, \n    COUNT(o.order_id) AS total_orders\nFROM customers c\nLEFT JOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_tier;",
+  "verdict": "VALID",
+  "detail": "3 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "17": {
+  "n": 17,
+  "question": "Find customers who live in Chennai and their order count. Show full name and count.",
+  "trap": false,
+  "sql": "SELECT c.full_name, COUNT(o.order_id) AS order_count FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE c.city = 'Chennai' GROUP BY c.customer_id, c.full_name;",
+  "verdict": "VALID",
+  "detail": "9 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "18": {
+  "n": 18,
+  "question": "How many orders were placed in each year and month? Show year, month and count as separate columns.",
+  "trap": false,
+  "sql": "SELECT YEAR(order_date) AS `year`, MONTH(order_date) AS `month`, COUNT(*) AS order_count FROM orders GROUP BY YEAR(order_date), MONTH(order_date) ORDER BY `year`, `month`;",
+  "verdict": "VALID",
+  "detail": "23 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "19": {
+  "n": 19,
+  "question": "For each customer who has ordered, show their full name and the date of their most recent order.",
+  "trap": false,
+  "sql": "SELECT c.full_name, MAX(o.order_date) AS most_recent_order_date FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.full_name;",
+  "verdict": "VALID",
+  "detail": "56 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "20": {
+  "n": 20,
+  "question": "Rank the products within each category by price, highest first. Show category name, product name, price and the rank.",
+  "trap": false,
+  "sql": "SELECT c.category_name, p.product_name, p.price, RANK() OVER (PARTITION BY c.category_id ORDER BY p.price DESC) AS `rank` FROM products p JOIN categories c ON p.category_id = c.category_id;",
+  "verdict": "VALID",
+  "detail": "24 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "21": {
+  "n": 21,
+  "question": "For every category show its name and its parent category's name (NULL if it has no parent).",
+  "trap": false,
+  "sql": "SELECT c.category_name, p.category_name AS parent_category_name FROM categories c LEFT JOIN categories p ON c.parent_category_id = p.category_id;",
+  "verdict": "VALID",
+  "detail": "9 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "22": {
+  "n": 22,
+  "question": "Which customers have spent more than the average spend per customer (quantity times unit price, counting only customers who have ordered)? Show full name.",
+  "trap": false,
+  "sql": "WITH customer_spending AS (\n    SELECT \n        c.customer_id,\n        c.full_name,\n        SUM(oi.quantity * oi.unit_price) AS total_spend\n    FROM customers c\n    JOIN orders o ON c.customer_id = o.customer_id\n    JOIN order_items oi ON o.order_id = oi.order_id\n    GROUP BY c.customer_id, c.full_name\n)\nSELECT full_name\nFROM customer_spending\nWHERE total_spend > (SELECT AVG(total_spend) FROM customer_spending);",
+  "verdict": "VALID",
+  "detail": "23 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "23": {
+  "n": 23,
+  "question": "Which customers have reviewed a product that they never ordered? Show the customer's full name and the product name.",
+  "trap": false,
+  "sql": "SELECT DISTINCT c.full_name, p.product_name\nFROM reviews r\nJOIN customers c ON r.customer_id = c.customer_id\nJOIN products p ON r.product_id = p.product_id\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM orders o\n    JOIN order_items oi ON o.order_id = oi.order_id\n    WHERE o.customer_id = r.customer_id\n      AND oi.product_id = r.product_id\n);",
+  "verdict": "VALID",
+  "detail": "81 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "24": {
+  "n": 24,
+  "question": "Show the total quantity sold for each product that has been sold at least once. Show product name and total quantity.",
+  "trap": false,
+  "sql": "SELECT p.product_name, SUM(oi.quantity) AS total_quantity_sold\nFROM products p\nJOIN order_items oi ON p.product_id = oi.product_id\nGROUP BY p.product_id, p.product_name;",
+  "verdict": "VALID",
+  "detail": "24 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "25": {
+  "n": 25,
+  "question": "How many orders were placed in the last 30 days?",
+  "trap": false,
+  "sql": "SELECT COUNT(*) FROM orders WHERE order_date >= NOW() - INTERVAL 30 DAY;",
+  "verdict": "VALID",
+  "detail": "1 row(s) identical to the reference answer",
+  "outcome": "MATCH",
+  "date": "2026-11-11"
+ },
+ "26": {
+  "n": 26,
+  "question": "Show each customer's email address and phone number.",
+  "trap": true,
+  "sql": "SELECT email, phone_number FROM customers;",
+  "verdict": "HALLUCINATED",
+  "detail": "UNKNOWN_COLUMN: Column 'email' does not exist on any of ['customers'].",
+  "outcome": "TRAP_BLOCKED",
+  "date": "2026-11-11"
+ },
+ "27": {
+  "n": 27,
+  "question": "Which warehouse is each product stored in?",
+  "trap": true,
+  "sql": "SELECT product_id, product_name, NULL AS warehouse FROM products;",
+  "verdict": "VALID",
+  "detail": "Gemini said the data is not available (NULL / text placeholder) instead of inventing a column.",
+  "outcome": "TRAP_PLACEHOLDER",
+  "date": "2026-11-11"
+ },
+ "28": {
+  "n": 28,
+  "question": "What discount percentage was applied to each order?",
+  "trap": true,
+  "sql": "SELECT \n    oi.order_id,\n    ((SUM(p.price * oi.quantity) - SUM(oi.unit_price * oi.quantity)) / SUM(p.price * oi.quantity)) * 100 AS discount_percentage\nFROM order_items oi\nJOIN products p ON oi.product_id = p.product_id\nGROUP BY oi.order_id",
+  "verdict": "VALID",
+  "detail": "Gemini returned runnable SQL for data the database does not have - read the SQL to see what it did.",
+  "outcome": "TRAP_EVADED",
+  "date": "2026-11-11"
+ },
+ "29": {
+  "n": 29,
+  "question": "List the supplier of every product.",
+  "trap": true,
+  "sql": "SELECT product_name, NULL AS supplier FROM products;",
+  "verdict": "VALID",
+  "detail": "Gemini said the data is not available (NULL / text placeholder) instead of inventing a column.",
+  "outcome": "TRAP_PLACEHOLDER",
+  "date": "2026-11-11"
+ },
+ "30": {
+  "n": 30,
+  "question": "Show each customer's date of birth and age.",
+  "trap": true,
+  "sql": "SELECT customer_id, full_name, date_of_birth, TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) AS age FROM customers;",
+  "verdict": "HALLUCINATED",
+  "detail": "UNKNOWN_COLUMN: Column 'date_of_birth' does not exist on any of ['customers'].",
+  "outcome": "TRAP_BLOCKED",
+  "date": "2026-11-11"
+ },
+ "31": {
+  "n": 31,
+  "question": "Show the payment method used for each order.",
+  "trap": true,
+  "sql": "SELECT order_id, payment_method FROM orders;",
+  "verdict": "HALLUCINATED",
+  "detail": "UNKNOWN_COLUMN: Column 'payment_method' does not exist on any of ['orders'].",
+  "outcome": "TRAP_BLOCKED",
+  "date": "2026-11-11"
+ }
+}

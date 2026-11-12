@@ -1,0 +1,13 @@
+# Secrets: never commit real keys or passwords
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local backups
+*.csv
